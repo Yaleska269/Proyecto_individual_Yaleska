@@ -1,0 +1,23 @@
+.color-navbar {
+    background-color: #8B6F47 !important;
+    background-image: linear-gradient(90deg, #121b96 0%, #2889b6 50%, #2697cc 100%);
+}
+
+.color-texto-masrca {
+    color: #1e3d87 !important;
+    font-size: 18px;
+}
+
+.estilo-contenedor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 108%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+    overflow: hidden;
+    padding: 20px;
+}
