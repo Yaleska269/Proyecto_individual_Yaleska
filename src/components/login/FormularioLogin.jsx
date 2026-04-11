@@ -1,10 +1,20 @@
 import React from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 
-const FormularioLogin = ({ usuario, contrasena, error, setUsuario, setContrasena, iniciarSesion }) => {
 
+const FormularioLogin = ({
+    usuario,
+    contrasena,
+    error,
+    setUsuario,
+    setContrasena,
+    iniciarSesion,
+}) => {
     return (
-        <Card style={{ minWidth: "320px", maxWidth: "400px", width: "100%" }} className="p-4 shadow-lg">
+        <Card
+            style={{ minWidth: "320px", maxWidth: "400px", width: "100%" }}
+            className="p-4 shadow-lg"
+        >
             <Card.Body>
                 <h3 className="text-center mb-4">Iniciar Sesión</h3>
 
@@ -39,7 +49,9 @@ const FormularioLogin = ({ usuario, contrasena, error, setUsuario, setContrasena
                 </Form>
             </Card.Body>
         </Card>
+
     );
+
 };
 
 export default FormularioLogin;

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import logo from "../../assets/hermoso.png";
-import { supabase } from "../../database/supabaseconfig.js";
+import { supabase } from "../../database/supabaseconfig";
 
-const Encabezado = () => {
+const encabezado = () => {
 
     const [mostrarMenu, setMostrarMenu] = useState(false);
     const navigate = useNavigate();
@@ -81,7 +81,7 @@ const Encabezado = () => {
                             className={mostrarMenu ? "color-texto-marca" : "text-white"}
                         >
                             {mostrarMenu ? <i className="bi-bookmark-fill me-2"></i> : null}
-                            <strong>Categorias</strong>
+                            <strong>Categorías</strong>
                         </Nav.Link>
 
                         <Nav.Link
@@ -100,7 +100,8 @@ const Encabezado = () => {
                             {mostrarMenu ? <i className="bi-images me-2"></i> : null}
                             <strong>Catálogo</strong>
                         </Nav.Link>
-                        <hr />
+
+
 
                         {/* Ícono cerrar sesión en barra superior */}
                         {mostrarMenu ? null : (
@@ -111,6 +112,7 @@ const Encabezado = () => {
                                 <i className="bi-box-arrow-right me-2"></i>
                             </Nav.Link>
                         )}
+
                         <hr />
                     </Nav>
 
@@ -119,10 +121,9 @@ const Encabezado = () => {
                         <div className="mt-3 p-3 rounded bg-light text-dark">
                             <p className="mb-2">
                                 <i className="bi-envelope-fill me-2"></i>
-                                {localStorage.getItem("usuario-supabase")?.toLowerCase() ||
-                                    "Usuario"}
+                                {(localStorage.getItem("usuario-supabase")?.toLowerCase() ||
+                                    "Usuario")}
                             </p>
-
                             <button
                                 className="btn btn-outline-danger mt-3 w-100"
                                 onClick={cerrarSesion}
@@ -181,9 +182,10 @@ const Encabezado = () => {
                         {contenidoMenu}
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
+
             </Container>
         </Navbar>
     );
 };
 
-export default Encabezado;
+export default encabezado;
