@@ -1,30 +1,10 @@
 .margen-superior-main {
-    margin-top: 50px;
+    margin-top: 90px;
     padding: 20px;
 }
 
 .color-navbar {
-    background-color: #eb7f04 !important;
-    background-image: linear-gradient(90deg, #1a086e 0%, #2889b6 50%, #2697cc 100%);
-}
-
-.color-texto-marca {
-    color: #1e3d87 !important;
-    font-size: 18px;
-}
-
-.boton-ancho-auto {
-    width: auto;
-}
-
-.margen-superior-main {
-    margin-top: 50px;
-    padding: 20px;
-}
-
-.color-navbar {
-    background-color: #1068db !important;
-    background-image: linear-gradient(90deg, #121b96 0%, #2889b6 50%, #2697cc 100%);
+    background-image: linear-gradient(90deg, #2697cc 0%, #ef62c4 50%, #f03b9b 100%);
 }
 
 .color-texto-marca {
