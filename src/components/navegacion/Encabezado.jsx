@@ -3,8 +3,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import logo from "../../assets/hermoso.png";
 import { supabase } from "../../database/supabaseconfig";
+import ChatIA from "../ia/ChatIA";
+
+
 
 const encabezado = () => {
+
+    const [mostrarChatIA, setMostrarChatIA] = useState(false);
 
     const [mostrarMenu, setMostrarMenu] = useState(false);
     const navigate = useNavigate();
@@ -101,6 +106,17 @@ const encabezado = () => {
                             <strong>Catálogo</strong>
                         </Nav.Link>
 
+                        <Nav.Link
+                            onClick={() => manejarNavegacion("/empleados")}
+                            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+                        >
+                            {mostrarMenu ? <i className="bi-images me-2"></i> : null}
+                            <strong>Empleados</strong>
+                        </Nav.Link>
+
+                        <Nav.Link onClick={() => setMostrarChatIA(true)} className="text-white">
+                            <i className="bi bi-robot me-2"></i>
+                        </Nav.Link>
 
 
                         {/* Ícono cerrar sesión en barra superior */}
@@ -139,7 +155,7 @@ const encabezado = () => {
     }
 
     return (
-        <Navbar expand="md" sticky="top" className="color-navbar shadow-lg" variant="dark">
+        <><Navbar expand="md" sticky="top" className="color-navbar shadow-lg" variant="dark">
             <Container>
 
                 <Navbar.Brand
@@ -165,6 +181,8 @@ const encabezado = () => {
                         aria-controls="menu-offcanvas"
                         onClick={manejarToggle}
                     />
+
+                    
                 )}
 
                 {/* Menú lateral */}
@@ -177,14 +195,19 @@ const encabezado = () => {
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title>Menú Discosa</Offcanvas.Title>
                     </Offcanvas.Header>
+                    
 
                     <Offcanvas.Body>
                         {contenidoMenu}
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
 
+
+
             </Container>
+
         </Navbar>
+        <ChatIA mostrar={mostrarChatIA} onCerrar={() => setMostrarChatIA(false)} /></>
     );
 };
 

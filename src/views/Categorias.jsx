@@ -10,6 +10,9 @@ import NotificacionOperacion from "../components/NotificacionOperacion";
 import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 import Paginacion from "../components/ordenamiento/Paginacion";
 
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 const Categorias = () => {
     const [toast, setToast] = useState({ mostrar: false, mensaje: "", tipo: "" });
     const [mostrarModal, setMostrarModal] = useState(false);
@@ -36,14 +39,13 @@ const Categorias = () => {
         descripcion_categoria: "",
     });
 
-    // 🔥 PAGINACIÓN
     const [paginaActual, setPaginaActual] = useState(1);
     const [registrosPorPagina, setRegistrosPorPagina] = useState(5);
 
     // ================= BUSQUEDA =================
     const manejarBusqueda = (e) => {
         setTextoBusqueda(e.target.value);
-        setPaginaActual(1); // resetear página al buscar
+        setPaginaActual(1);
     };
 
     useEffect(() => {
@@ -51,12 +53,14 @@ const Categorias = () => {
             setCategoriasFiltradas(categorias);
         } else {
             const textoLower = textoBusqueda.toLowerCase().trim();
+
             const filtradas = categorias.filter(
                 (cat) =>
                     cat.nombre_categoria.toLowerCase().includes(textoLower) ||
                     (cat.descripcion_categoria &&
                         cat.descripcion_categoria.toLowerCase().includes(textoLower))
             );
+
             setCategoriasFiltradas(filtradas);
         }
     }, [textoBusqueda, categorias]);
@@ -65,10 +69,14 @@ const Categorias = () => {
         ? categoriasFiltradas
         : categorias;
 
-    // 🔥 LOGICA PAGINACION
+    // ================= PAGINACION =================
     const indiceUltimo = paginaActual * registrosPorPagina;
     const indicePrimero = indiceUltimo - registrosPorPagina;
-    const categoriasPaginadas = datosMostrar.slice(indicePrimero, indiceUltimo);
+
+    const categoriasPaginadas = datosMostrar.slice(
+        indicePrimero,
+        indiceUltimo
+    );
 
     const establecerPaginaActual = (numeroPagina) => {
         setPaginaActual(numeroPagina);
@@ -79,10 +87,40 @@ const Categorias = () => {
         setPaginaActual(1);
     };
 
+    // ================= PDF =================
+    const generarPDFCategoria = (categoria) => {
+
+        const doc = new jsPDF();
+
+        // Título
+        doc.setFontSize(18);
+        doc.text("Reporte de Categoría", 14, 20);
+
+        // Línea decorativa
+        doc.line(14, 25, 195, 25);
+
+        // Información
+        doc.setFontSize(12);
+
+        autoTable(doc, {
+            startY: 35,
+            head: [["Campo", "Valor"]],
+            body: [
+                ["ID", categoria.id_categoria],
+                ["Nombre", categoria.nombre_categoria],
+                ["Descripción", categoria.descripcion_categoria],
+            ],
+        });
+
+        // Descargar PDF
+        doc.save(`categoria_${categoria.id_categoria}.pdf`);
+    };
+
     // ================= CARGA =================
     const cargarCategorias = async () => {
         try {
             setCargando(true);
+
             const { data, error } = await supabase
                 .from("categorias")
                 .select("*")
@@ -94,6 +132,7 @@ const Categorias = () => {
                     mensaje: "Error al cargar categorías.",
                     tipo: "error",
                 });
+
                 return;
             }
 
@@ -106,12 +145,15 @@ const Categorias = () => {
                         item.nombre_categoria ?? item.nombre ?? "",
                 }))
             );
+
         } catch {
+
             setToast({
                 mostrar: true,
                 mensaje: "Error inesperado.",
                 tipo: "error",
             });
+
         } finally {
             setCargando(false);
         }
@@ -123,31 +165,61 @@ const Categorias = () => {
 
     // ================= CRUD =================
     const agregarCategoria = async () => {
-        if (!nuevaCategoria.nombre_categoria.trim() || !nuevaCategoria.descripcion_categoria.trim()) {
-            setToast({ mostrar: true, mensaje: "Debe llenar todos los campos.", tipo: "advertencia" });
+
+        if (
+            !nuevaCategoria.nombre_categoria.trim() ||
+            !nuevaCategoria.descripcion_categoria.trim()
+        ) {
+
+            setToast({
+                mostrar: true,
+                mensaje: "Debe llenar todos los campos.",
+                tipo: "advertencia"
+            });
+
             return;
         }
 
-        const { error } = await supabase.from("categorias").insert([nuevaCategoria]);
+        const { error } = await supabase
+            .from("categorias")
+            .insert([nuevaCategoria]);
 
         if (error) {
-            setToast({ mostrar: true, mensaje: "Error al registrar.", tipo: "error" });
+
+            setToast({
+                mostrar: true,
+                mensaje: "Error al registrar.",
+                tipo: "error"
+            });
+
             return;
         }
 
         await cargarCategorias();
-        setNuevaCategoria({ nombre_categoria: "", descripcion_categoria: "" });
+
+        setNuevaCategoria({
+            nombre_categoria: "",
+            descripcion_categoria: "",
+        });
+
         setMostrarModal(false);
     };
 
     const actualizarCategoria = async () => {
+
         const { error } = await supabase
             .from("categorias")
             .update(categoriaEditar)
             .eq("id_categoria", categoriaEditar.id_categoria);
 
         if (error) {
-            setToast({ mostrar: true, mensaje: "Error al actualizar.", tipo: "error" });
+
+            setToast({
+                mostrar: true,
+                mensaje: "Error al actualizar.",
+                tipo: "error"
+            });
+
             return;
         }
 
@@ -156,13 +228,20 @@ const Categorias = () => {
     };
 
     const eliminarCategoria = async () => {
+
         const { error } = await supabase
             .from("categorias")
             .delete()
             .eq("id_categoria", categoriaAEliminar.id_categoria);
 
         if (error) {
-            setToast({ mostrar: true, mensaje: "Error al eliminar.", tipo: "error" });
+
+            setToast({
+                mostrar: true,
+                mensaje: "Error al eliminar.",
+                tipo: "error"
+            });
+
             return;
         }
 
@@ -182,12 +261,20 @@ const Categorias = () => {
 
     const manejoCambioInput = (e) => {
         const { name, value } = e.target;
-        setNuevaCategoria((prev) => ({ ...prev, [name]: value }));
+
+        setNuevaCategoria((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const manejoCambioInputEdicion = (e) => {
         const { name, value } = e.target;
-        setCategoriaEditar((prev) => ({ ...prev, [name]: value }));
+
+        setCategoriaEditar((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     // ================= RENDER =================
@@ -195,16 +282,20 @@ const Categorias = () => {
         <Container className="mt-3">
 
             <Row className="align-items-center mb-3">
+
                 <Col>
                     <h3>
-                        <i className="bi-bookmark-plus-fill me-2"></i> Categorías
+                        <i className="bi-bookmark-plus-fill me-2"></i>
+                        Categorías
                     </h3>
                 </Col>
+
                 <Col className="text-end">
                     <Button onClick={() => setMostrarModal(true)}>
-                        Nueva Categoría
+                        +Nueva Categoría
                     </Button>
                 </Col>
+
             </Row>
 
             <hr />
@@ -212,45 +303,60 @@ const Categorias = () => {
             {/* BUSQUEDA */}
             <Row className="mb-4">
                 <Col md={6}>
+
                     <CuadroBusquedas
                         textoBusqueda={textoBusqueda}
                         manejarCambioBusqueda={manejarBusqueda}
                         placeholder="Buscar..."
                     />
+
                 </Col>
             </Row>
 
             {/* SIN RESULTADOS */}
-            {!cargando && textoBusqueda && datosMostrar.length === 0 && (
-                <Alert variant="info">No se encontraron resultados</Alert>
-            )}
+            {!cargando &&
+                textoBusqueda &&
+                datosMostrar.length === 0 && (
+                    <Alert variant="info">
+                        No se encontraron resultados
+                    </Alert>
+                )}
 
             {/* LOADING */}
             {cargando && <Spinner animation="border" />}
 
             {/* TABLA / TARJETAS */}
             {!cargando && datosMostrar.length > 0 && (
+
                 <Row>
+
                     <Col className="d-lg-none">
+
                         <TarjetaCategoria
                             categorias={categoriasPaginadas}
                             abrirModalEdicion={abrirModalEdicion}
                             abrirModalEliminacion={abrirModalEliminacion}
                         />
+
                     </Col>
 
                     <Col className="d-none d-lg-block">
+
                         <TablaCategorias
                             categorias={categoriasPaginadas}
                             abrirModalEdicion={abrirModalEdicion}
                             abrirModalEliminacion={abrirModalEliminacion}
+                            generarPDFCategoria={generarPDFCategoria}
                         />
+
                     </Col>
+
                 </Row>
             )}
 
             {/* PAGINACION */}
             {datosMostrar.length > 0 && (
+
                 <Paginacion
                     registrosPorPagina={registrosPorPagina}
                     totalRegistros={datosMostrar.length}
@@ -288,8 +394,14 @@ const Categorias = () => {
                 mostrar={toast.mostrar}
                 mensaje={toast.mensaje}
                 tipo={toast.tipo}
-                onCerrar={() => setToast({ ...toast, mostrar: false })}
+                onCerrar={() =>
+                    setToast({
+                        ...toast,
+                        mostrar: false
+                    })
+                }
             />
+
         </Container>
     );
 };
