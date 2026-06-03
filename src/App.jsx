@@ -7,8 +7,12 @@ import Productos from "./views/Productos";
 import Login from "./views/Login";
 import RutaProtegida from "./components/rutas/RutaProtegida";
 import Pagina404 from "./views/Pagina404";
-import "./App.css";
 import Empleados from "./views/Empleados";
+import Clientes from "./views/Clientes";
+import "./App.css";
+import Dashboard from "./views/Dashboard";
+import Ventas from "./views/Ventas"
+
 
 const App = () => {
     return (
@@ -22,6 +26,9 @@ const App = () => {
                     <Route path="/catalogo" element={<RutaProtegida><Catalogo /></RutaProtegida>} />
                     <Route path="/productos" element={<RutaProtegida><Productos /></RutaProtegida>} />
                     <Route path="/empleados" element={<RutaProtegida><Empleados /></RutaProtegida>} />
+                    <Route path="/clientes" element={<RutaProtegida><Clientes /></RutaProtegida>} />
+                    <Route path="/dashboard" element={<RutaProtegida><Dashboard /></RutaProtegida>} />
+                    <Route path="/ventas" element={<RutaProtegida><Ventas /></RutaProtegida>} />
                     <Route path="*" element={<Pagina404 />} />
                 </Routes>
             </main>

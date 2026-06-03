@@ -12,9 +12,9 @@ const ChatIA = ({ mostrar, onCerrar }) => {
     const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
     const contextoBaseDatos = `
-  Sistema de ventas. 
-  Tablas disponibles:
-  - categorias (id_categoria, nombre_categoria, descripcion_categoria)
+    Sistema de ventas. 
+    Tablas disponibles:
+    - categorias (id_categoria, nombre_categoria, descripcion_categoria)
   - clientes (id_cliente, nombre_cliente, apellido_cliente, celular)
   - productos (id_producto, nombre_producto, descripcion_producto, categoria_producto, precio_venta, url_imagen)
   - ventas (id_venta, id_cliente, id_empleado, fecha_venta, metodo_pago, total)

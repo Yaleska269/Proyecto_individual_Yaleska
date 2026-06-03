@@ -114,6 +114,31 @@ const encabezado = () => {
                             <strong>Empleados</strong>
                         </Nav.Link>
 
+                        <Nav.Link
+                            onClick={() => manejarNavegacion("/clientes")}
+                            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+                        >
+                            {mostrarMenu ? <i className="bi-images me-2"></i> : null}
+                            <strong>Clientes</strong>
+                        </Nav.Link>
+
+                        <Nav.Link
+                            onClick={() => manejarNavegacion("/ventas")}
+                            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+                        >
+                            {mostrarMenu ? <i className="bi-images me-2"></i> : null}
+                            <strong>Ventas</strong>
+                        </Nav.Link>
+
+                        <Nav.Link
+                            onClick={() => manejarNavegacion("/dashboard")}
+                            className={mostrarMenu ? "color-texto-marca" : "text-white"}
+                        >
+                            {mostrarMenu ? <i className="bi-images me-2"></i> : null}
+                            <strong>Dashboard</strong>
+                        </Nav.Link>
+
+
                         <Nav.Link onClick={() => setMostrarChatIA(true)} className="text-white">
                             <i className="bi bi-robot me-2"></i>
                         </Nav.Link>
