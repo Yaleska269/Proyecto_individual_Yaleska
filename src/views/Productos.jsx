@@ -11,6 +11,7 @@ import CuadroBusquedas from "../components/busquedas/CuadroBusquedas";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import ModalQRProducto from "../components/productos/ModalQRProducto";
 
 const Productos = () => {
 
@@ -29,6 +30,9 @@ const Productos = () => {
 
     const [productoEditar, setProductoEditar] = useState(null);
     const [productoAEliminar, setProductoAEliminar] = useState(null);
+
+    const [mostrarModalQR, setMostrarModalQR] = useState(false);
+    const [productoQR, setProductoQR] = useState(null);
 
     const [nuevoProducto, setNuevoProducto] = useState({
         nombre_producto: "",
@@ -76,6 +80,45 @@ const Productos = () => {
         cargarCategorias();
         cargarProductos();
     }, []);
+
+    // copiaaa
+    const copiarProducto = async (producto) => {
+        if (!producto) return;
+
+        const texto = `
+    ID: ${producto.id_producto}
+    Nombre: ${producto.nombre_producto}
+    Descripción: ${producto.descripcion_producto || "Sin descripción"}`
+
+        try {
+            await navigator.clipboard.writeText(texto);
+            setToast({
+                mostrar: true,
+                mensaje: `Producto "${producto.nombre_producto}" copiado al portapapeles.`,
+                tipo: "exito",
+            });
+        } catch (err) {
+            console.error("Error al copiar producto:", err);
+            setToast({
+                mostrar: true,
+                mensaje: "No se pudo copiar al portapapeles.",
+                tipo: "error",
+            });
+        }
+    };
+
+    const generarQImagen = (producto) => {
+        if (!producto.url_imagen) {
+            setToast({
+                mostrar: true,
+                mensaje: "Este producto no tiene imagen asociada",
+                tipo: "advertencia"
+            });
+            return;
+        }
+        setProductoQR(producto);
+        setMostrarModalQR(true);
+    };
 
     useEffect(() => {
 
@@ -337,6 +380,8 @@ const Productos = () => {
                 abrirModalEdicion={abrirModalEdicion}
                 abrirModalEliminacion={abrirModalEliminacion}
                 generarPDFProducto={generarPDFProducto}
+                copiarProducto={copiarProducto}
+                generarQImagen={generarQImagen}
             />
 
             <ModalRegistroProducto
@@ -369,6 +414,12 @@ const Productos = () => {
                 eliminarProducto={() =>
                     eliminarProducto(productoAEliminar.id_producto)
                 }
+            />
+
+            <ModalQRProducto
+                mostrar={mostrarModalQR}
+                onHide={() => setMostrarModalQR(false)}
+                producto={productoQR}
             />
 
         </Container>

@@ -8,6 +8,8 @@ const TablaProductos = ({
     abrirModalEliminacion,
     generarPDFProducto,
     cargando,
+    copiarProducto,
+    generarQImagen,
 }) => {
 
     const obtenerNombreCategoria = (id) => {
@@ -124,6 +126,24 @@ const TablaProductos = ({
                                         }
                                     >
                                         <i className="bi bi-file-earmark-pdf"></i>
+                                    </Button>
+
+                                    <Button
+                                        variant="outline-success"
+                                        size="sm"
+                                        className="m-1"
+                                        onClick={() => copiarProducto(p)}
+                                    >
+                                        <i className="bi bi-clipboard"></i>
+                                    </Button>
+                                    <Button
+                                        variant="outline-primary"
+                                        size="sm"
+                                        className="m-1"
+                                        onClick={() => generarQImagen && generarQImagen(p)}
+                                        title="Generar código QR"
+                                    >
+                                        <i className="bi bi-qr-code"></i>
                                     </Button>
 
                                 </td>
