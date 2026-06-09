@@ -6,6 +6,7 @@ const TarjetaCategoria = ({
     categorias,
     abrirModalEdicion,
     abrirModalEliminacion,
+    copiarCategoria,
 }) => {
     const [cargando, setCargando] = useState(true);
     const [idTarjetaActiva, setIdTarjetaActiva] = useState(null);

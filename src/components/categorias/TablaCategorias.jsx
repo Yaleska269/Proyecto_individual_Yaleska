@@ -5,7 +5,8 @@ const TablaCategorias = ({
     categorias,
     abrirModalEdicion,
     abrirModalEliminacion,
-    generarPDFCategoria
+    generarPDFCategoria,
+    copiarCategoria
 }) => {
 
     return (
@@ -67,8 +68,11 @@ const TablaCategorias = ({
                             <Button
                                 variant="outline-success"
                                 size="sm"
-                                onClick={() => copiarCategoria(categoria)}
-                                title="Copiar al portapapeles"
+                                onClick={() => {
+                                    copiarCategoria(categoria);
+                                    setIdTarjetaActiva(null);
+                                }}
+                                aria-label={`Copiar ${categoria.nombre_categoria}`}
                             >
                                 <i className="bi bi-clipboard"></i>
                             </Button>
