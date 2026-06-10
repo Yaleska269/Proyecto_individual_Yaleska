@@ -131,6 +131,14 @@ const encabezado = () => {
                         </Nav.Link>
 
                         <Nav.Link
+                            onClick={() => manejarNavegacion("/dashboard-estadistico")}
+                            className="sidebar-link"
+                        >
+                            <i className="bi bi-graph-up-arrow me-2"></i>
+                            Dashboard Estadístico
+                        </Nav.Link>
+
+                        <Nav.Link
                             onClick={() => manejarNavegacion("/dashboard")}
                             className={mostrarMenu ? "color-texto-marca" : "text-white"}
                         >

@@ -12,6 +12,8 @@ import Clientes from "./views/Clientes";
 import "./App.css";
 import Dashboard from "./views/Dashboard";
 import Ventas from "./views/Ventas"
+import DashboardEstadistico from "./views/DashboardEstadistico";
+
 
 
 const App = () => {
@@ -29,6 +31,7 @@ const App = () => {
                     <Route path="/clientes" element={<RutaProtegida><Clientes /></RutaProtegida>} />
                     <Route path="/dashboard" element={<RutaProtegida><Dashboard /></RutaProtegida>} />
                     <Route path="/ventas" element={<RutaProtegida><Ventas /></RutaProtegida>} />
+                    <Route path="/dashboard-estadistico" element={<RutaProtegida><DashboardEstadistico/></RutaProtegida>}/>
                     <Route path="*" element={<Pagina404 />} />
                 </Routes>
             </main>
